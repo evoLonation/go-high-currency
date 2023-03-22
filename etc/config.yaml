@@ -1,0 +1,26 @@
+httpServer:
+  Port: 8080
+service:
+  datasource: root:2002116yy@tcp(mysql:3306)/highcurrency?parseTime=true
+  replicationDB:
+    masterSource: root:2002116yy@tcp(mysql-replication-0.mysql-replication:3306)/highcurrency?parseTime=true
+    readSource: root:2002116yy@tcp(mysql-read:3306)/highcurrency?parseTime=true
+  shardingDB:
+    databaseNumber: 3
+    tableNumber: 3
+    dataSources: 
+    - root:2002116yy@tcp(mysql-sharding-0.mysql-sharding:3306)/highcurrency?parseTime=true
+    - root:2002116yy@tcp(mysql-sharding-1.mysql-sharding:3306)/highcurrency?parseTime=true
+    - root:2002116yy@tcp(mysql-sharding-2.mysql-sharding:3306)/highcurrency?parseTime=true
+  redisCluster:
+    nodeNumber: 3
+    redis:
+    - addr: redis-cluster-0.redis-cluster
+      password: 2002116yy
+    - addr: redis-cluster-1.redis-cluster
+      password: 2002116yy
+    - addr: redis-cluster-2.redis-cluster
+      password: 2002116yy
+  redisServer:
+    addr: redis-highpriority
+    password: 2002116yy

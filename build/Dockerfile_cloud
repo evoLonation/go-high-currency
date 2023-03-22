@@ -1,0 +1,22 @@
+FROM golang:alpine AS builder
+
+LABEL stage=gobuilder
+
+ENV CGO_ENABLED 0 
+ENV GOPROXY https://goproxy.cn,direct
+ENV GOCACHE /build/.cache/go-build
+
+WORKDIR /build
+
+COPY go.mod .
+COPY go.sum .
+RUN go mod download
+COPY ./src ./src
+RUN --mount=type=cache,target=/build/.cache/go-build go build -ldflags="-s -w" -o /app/main ./src/main.go
+
+FROM scratch
+
+WORKDIR /app
+COPY --from=builder /app/main ./
+
+CMD ["./main"]
