@@ -10,36 +10,40 @@ import (
 )
 
 type Conf struct {
-	HttpServer HttpServerConf `yaml:"httpServer"`
-	Service    ServiceConf    `yaml:"service"`
+	HttpServer   ServerConf       `yaml:"httpServer"`
+	Service      ServiceConf      `yaml:"service"`
+	HighPriority HighPriorityConf `yaml:"highPriority"`
+}
+type HighPriorityConf struct {
+	EnterItems RedisConf `yaml:"enterItems"`
 }
 type ServiceConf struct {
 	DataSource    string            `yaml:"dataSource"`
 	ReplicationDB ReplicationDBConf `yaml:"replicationDB"`
 	ShardingDB    ShardingDBConf    `yaml:"shardingDB"`
 	RedisCluster  RedisClusterConf  `yaml:"redisCluster"`
-	RedisServer   RedisConf         `yaml:"redisServer"`
-	HttpServer    HttpServerConf    `yaml:"httpServer"`
+	HttpServer    ServerConf        `yaml:"httpServer"`
 }
 type ReplicationDBConf struct {
 	MasterSource string `yaml:"masterSource"`
 	ReadSource   string `yaml:"readSource"`
 }
 type ShardingDBConf struct {
-	DatabaseNumber int      `yaml:"databaseNumber"`
-	TableNumber    int      `yaml:"tableNumber"`
+	DatabaseNumber int64    `yaml:"databaseNumber"`
+	TableNumber    int64    `yaml:"tableNumber"`
 	DataSources    []string `yaml:"dataSources"`
 }
 type RedisClusterConf struct {
 	Redis      []RedisConf `yaml:"redis"`
-	NodeNumber int         `yaml:"nodeNumber"`
+	NodeNumber int64       `yaml:"nodeNumber"`
 }
 type RedisConf struct {
 	Addr     string `yaml:"addr"`
 	Password string `yaml:"password"`
 }
-type HttpServerConf struct {
-	Port string `yaml:"port"`
+type ServerConf struct {
+	Port            string    `yaml:"port"`
+	EnterItemsRedis RedisConf `yaml:"redisServer"`
 }
 
 var configFile string = "./etc/config.yaml"

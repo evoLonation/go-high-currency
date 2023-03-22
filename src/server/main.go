@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
-	redis "github.com/redis/go-redis/v9"
+	redis "github.com/go-redis/redis/v8"
 )
 
 type Order struct {
@@ -114,7 +114,8 @@ func main() {
 
 	rdbs := []*redis.Client{rdb0, rdb1, rdb2}
 	ctxs := []context.Context{ctx0, ctx1, ctx2}
-
+	sub := rdbs[0].Subscribe()
+	sub.ReceiveMessage()
 	for i := 0; i < 10; i++ {
 		key := "item-" + strconv.Itoa(i)
 		id := redisSelector(key)
